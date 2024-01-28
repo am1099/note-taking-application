@@ -7,59 +7,65 @@ use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function getNotes()
     {
-        //
+        return response()->json(['success' => true, 'note' => Note::get()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function getNotesById($id)
     {
-        //
+        return response()->json(['success' => true, 'note' => Note::whereId($id)->first()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function createNote(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'title' => ['required', 'max:255'],
+            'content' => ['required'],
+        ]);
+
+        try {
+            Note::create([
+                "title" => $request->title,
+                "content" => $request->content,
+            ]);
+            return response()->json(['success' => true, 'notes' => $this->getNotes()]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Note $note)
+
+    public function updateNote(Request $request, $id)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'title' => ['required', 'max:255'],
+            'content' => ['required'],
+        ]);
+
+        try {
+            Note::whereId($id)->first()->update($request);
+
+            return response()->json(['success' => true, 'notes' => $this->getNotes()]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Note $note)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Note $note)
+    public function deleteNote($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Note $note)
-    {
-        //
+        try {
+            $note = Note::findOrFail($id);
+            $note->delete();
+            return response()->json(['success' => true, 'notes' => $this->getNotes()]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
     }
 }
