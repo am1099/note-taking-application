@@ -10,7 +10,7 @@ class NoteController extends Controller
 
     public function getNotes()
     {
-        return response()->json(['success' => true, 'note' => Note::get()]);
+        return response()->json(['success' => true, 'notes' => Note::get()]);
     }
 
 
@@ -23,7 +23,7 @@ class NoteController extends Controller
     public function createNote(Request $request)
     {
         // Validate the incoming request data
-        $validatedData = $request->validate([
+        $request->validate([
             'title' => ['required', 'max:255'],
             'content' => ['required'],
         ]);
@@ -43,7 +43,7 @@ class NoteController extends Controller
     public function updateNote(Request $request, $id)
     {
         // Validate the incoming request data
-        $validatedData = $request->validate([
+        $request->validate([
             'title' => ['required', 'max:255'],
             'content' => ['required'],
         ]);
