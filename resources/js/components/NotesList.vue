@@ -1,23 +1,32 @@
 <template>
-  <div class="snap-x overflow-auto max-h-[30em]">
+  <div class="overflow-auto max-h-[30em]">
     <div
-      class="snap-end max-w-xs ml-20 flex p-3 bg-white rounded-lg shadow-xl hover:bg-grey-900 mb-2"
       v-for="note in notes"
       :key="note.id"
+      @click="noteSelected(note)"
+      :class="
+        isSelected(note.id)
+          ? 'bg-gray-600 transition ease-in-out delay-150 hover:translate-y-0.5 scale-105 duration-50'
+          : 'bg-white'
+      "
+      class="max-w-xs ml-20 flex p-3 rounded-lg shadow-xl mb-2"
     >
       <div
-        class="grid grid-rows-2 grid-flow-col gap-4 ml-1 pt-1"
-        @click="noteSelected(note)"
+        class="grid grid-rows-2 grid-flow-col gap-4 ml-1 pt-1 hover:bg-grey-900"
       >
         <div class="row-span-1">
           <h4
-            class="text-xl text-gray-900 leading-tight group-hover:text-white"
+            class="text-xl leading-tight"
+            :class="isSelected(note.id) ? 'text-white' : 'text-gray-700'"
           >
             {{ note.title }}
           </h4>
         </div>
         <div class="row-span-1">
-          <p class="text-sm text-gray-600 group-hover:text-white">
+          <p
+            class="text-sm"
+            :class="isSelected(note.id) ? 'text-white' : 'text-gray-700'"
+          >
             <strong>Date & Time: </strong>
             {{ noteDateCreated(note.created_at) }}
           </p>
@@ -26,7 +35,7 @@
           <div class="flex flex-col">
             <button
               @click="updateNote(note)"
-              class="bg-teal-400 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded inline-flex items-center mb-1"
+              class="bg-teal-400 text-white font-bold py-2 px-4 rounded inline-flex items-center mb-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-teal-800 duration-300"
             >
               <svg
                 class="fill-current text-white w-4 h-4"
@@ -39,8 +48,8 @@
               </svg>
             </button>
             <button
-              @click="deleteNote(note.id)"
-              class="bg-red-400 hover:bg-red-800 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+              @click="isDeleteModalVisible = true"
+              class="bg-red-400 text-white font-bold py-2 px-4 rounded inline-flex items-center transition ease-in-out delay-150 hover:translate-y-1 hover:scale-110 hover:bg-red-800 duration-300"
             >
               <svg
                 class="fill-current text-white w-4 h-4"
@@ -57,7 +66,7 @@
       </div>
     </div>
 
-    <!-- New Note Form -->
+    <!-- Edit Note Form -->
     <div v-if="isEditModalVisible">
       <div class="grid grid-cols-6 gap-4">
         <div class="col-start-2 col-span-4">
@@ -78,36 +87,68 @@
         </div>
       </div>
     </div>
+
+    <!-- delete Note Form -->
+    <div v-if="isDeleteModalVisible">
+      <div class="grid grid-cols-6 gap-4">
+        <div class="col-start-2 col-span-4">
+          <NoteDeleteForm
+            @form-submission="
+              (data) => {
+                $emit('noteDeleted', data);
+              }
+            "
+            @notes-update="
+              (notes) => {
+                $emit('notesUpdate', notes);
+              }
+            "
+            @close="isDeleteModalVisible = false"
+            :selectedNoteId="selectedNoteId"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import NoteForm from "./NoteForm.vue";
+import NoteForm from "./forms/NoteForm.vue";
+import NoteDeleteForm from "./forms/NoteDeleteForm.vue";
 
 export default {
   components: {
     NoteForm,
+    NoteDeleteForm,
   },
   props: ["notes"],
 
   data() {
     return {
       isEditModalVisible: false,
+      isDeleteModalVisible: false,
       noteToUpdate: null,
+      selectedNoteId: null,
+      textColor: null,
     };
   },
   mounted() {},
-  computed: {},
+  computed: {
+    isSelected() {
+      // Computed property to determine if the current note is the selected note
+      return (noteId) => this.selectedNoteId && this.selectedNoteId === noteId;
+    },
+  },
   methods: {
     updateNote(note) {
       this.noteToUpdate = note;
       this.isEditModalVisible = true;
     },
-    deleteNote(id) {},
     noteSelected(note) {
       this.$emit("noteSelected", note);
+      console.log("selected: " + note.id);
+      this.selectedNoteId = note.id;
     },
-
     noteDateCreated(date) {
       const dateObject = new Date(date);
 

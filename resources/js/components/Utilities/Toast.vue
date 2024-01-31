@@ -1,11 +1,11 @@
 <template>
   <div
     id="toast-default"
-    :class="`flex items-center w-full max-w-xs pt-4 text-${bgColor}-600 rounded-lg shadow `"
+    class="flex items-center w-full max-w-xs p-2 mb-2 text-gray-500 bg-white rounded-lg shadow"
     role="alert"
   >
     <div
-      :class="`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-${bgColor}-500 rounded-lg`"
+      :class="`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-${bgColor}-500 bg-${bgColor}-100 rounded-lg`"
     >
       <svg
         v-if="success"

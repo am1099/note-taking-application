@@ -37,6 +37,7 @@
         <div class="col-span-1">
           <NotesList
             :notes="notes"
+            @note-deleted="handleDeleteSubmission"
             @note-updated-form="handleFormSubmission"
             @note-selected="setSelectedNote"
             @notes-update="notesUpdated"
@@ -70,7 +71,7 @@
 
 <script>
 import NotesList from "./NotesList.vue";
-import NoteForm from "./NoteForm.vue";
+import NoteForm from "./forms/NoteForm.vue";
 import ViewNote from "./ViewNote.vue";
 import Toast from "./Utilities/Toast.vue";
 
@@ -112,16 +113,24 @@ export default {
     setSelectedNote(note) {
       this.selectedNote = note;
     },
-    handleFormSubmission(data) {
-      console.log(data);
+    handleFormSubmission(data, noteStillSelected = true) {
       this.success = data.success;
       this.toastMessage = data.message;
       this.toastBgColor = data.bgColor;
       this.showToast = true;
+      if (!noteStillSelected) {
+        this.selectedNote = null;
+      }
 
-      setTimeout(function () {
-        this.showToast = false;
-      }, 5000);
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.showToast = false;
+        }, 5000);
+      });
+    },
+
+    handleDeleteSubmission(data) {
+      this.handleFormSubmission(data, false);
     },
     notesUpdated(notes) {
       console.log(notes);
