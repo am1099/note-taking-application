@@ -1,11 +1,11 @@
 <template>
   <div
     id="toast-default"
-    :class="`flex items-center w-full max-w-xs p-4 text-${bgColor}-600 rounded-lg shadow dark:text-${bgColor}-200 dark:bg-${bgColor}-900`"
+    :class="`flex items-center w-full max-w-xs pt-4 text-${bgColor}-600 rounded-lg shadow `"
     role="alert"
   >
     <div
-      :class="`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-${bgColor}-500 rounded-lg dark:bg-${bgColor}-800 dark:text-${bgColor}-200`"
+      :class="`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-${bgColor}-500 rounded-lg`"
     >
       <svg
         v-if="success"
@@ -32,6 +32,7 @@
     <div class="ms-3 text-sm font-normal">{{ message }}</div>
     <button
       type="button"
+      @click="$emit('close')"
       :class="`ms-auto -mx-1.5 -my-1.5 bg-white text-${bgColor}-400 hover:text-${bgColor}-900 rounded-lg focus:ring-2 focus:ring-${bgColor}-300 p-1.5 hover:bg-${bgColor}-400 inline-flex items-center justify-center h-8 w-8 dark:text-${bgColor}-500 dark:hover:text-white dark:bg-${bgColor}-800 dark:hover:bg-${bgColor}-700`"
       data-dismiss-target="#toast-default"
       aria-label="Close"

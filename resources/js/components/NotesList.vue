@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="snap-x overflow-auto max-h-[30em]">
     <div
-      class="max-w-sm mx-auto flex p-6 bg-white rounded-lg shadow-xl hover:bg-grey-900 mb-2"
+      class="snap-end max-w-xs ml-20 flex p-3 bg-white rounded-lg shadow-xl hover:bg-grey-900 mb-2"
       v-for="note in notes"
       :key="note.id"
     >
@@ -18,13 +18,14 @@
         </div>
         <div class="row-span-1">
           <p class="text-sm text-gray-600 group-hover:text-white">
-            Date & Time: {{ note.created_at }}
+            <strong>Date & Time: </strong>
+            {{ noteDateCreated(note.created_at) }}
           </p>
         </div>
         <div class="row-span-2">
           <div class="flex flex-col">
             <button
-              @click="updateNote()"
+              @click="updateNote(note)"
               class="bg-teal-400 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded inline-flex items-center mb-1"
             >
               <svg
@@ -55,24 +56,68 @@
         </div>
       </div>
     </div>
+
+    <!-- New Note Form -->
+    <div v-if="isEditModalVisible">
+      <div class="grid grid-cols-6 gap-4">
+        <div class="col-start-2 col-span-4">
+          <NoteForm
+            @form-submission="
+              (data) => {
+                $emit('noteUpdatedForm', data);
+              }
+            "
+            @notes-update="
+              (notes) => {
+                $emit('notesUpdate', notes);
+              }
+            "
+            @close="isEditModalVisible = false"
+            :noteToUpdate="noteToUpdate"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import NoteForm from "./NoteForm.vue";
+
 export default {
-  components: {},
+  components: {
+    NoteForm,
+  },
   props: ["notes"],
 
   data() {
-    return {};
+    return {
+      isEditModalVisible: false,
+      noteToUpdate: null,
+    };
   },
   mounted() {},
   computed: {},
   methods: {
-    updateNote() {},
+    updateNote(note) {
+      this.noteToUpdate = note;
+      this.isEditModalVisible = true;
+    },
     deleteNote(id) {},
     noteSelected(note) {
       this.$emit("noteSelected", note);
+    },
+
+    noteDateCreated(date) {
+      const dateObject = new Date(date);
+
+      const day = dateObject.getDate().toString().padStart(2, "0");
+      const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+      const year = dateObject.getFullYear();
+      const hours = dateObject.getHours().toString().padStart(2, "0");
+      const minutes = dateObject.getMinutes().toString().padStart(2, "0");
+
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
     },
   },
 };

@@ -49,7 +49,10 @@ class NoteController extends Controller
         ]);
 
         try {
-            Note::whereId($id)->first()->update($request);
+            Note::whereId($id)->first()->update([
+                "title" => $request->title,
+                "content" => $request->content,
+            ]);
 
             return response()->json(['success' => true, 'notes' => $this->getNotes()]);
         } catch (\Exception $e) {

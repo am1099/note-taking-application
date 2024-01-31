@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="w-full h-auto flex justify-center bg-gradient-to-r from-green-900 to-blue-75000 bg-teal-900 rounded-b-lg"
+      class="w-full h-auto flex justify-center bg-gradient-to-r from-green-900 to-blue-750 bg-teal-900 rounded-b-lg"
     >
       <h1 class="text-3xl font-bold text-white mt-6 mb-6">Note Taking Arena</h1>
     </div>
@@ -11,31 +11,36 @@
         :success="success"
         :message="toastMessage"
         :bgColor="toastBgColor"
+        @close="showToast = false"
       />
     </div>
 
-    <div class="flex justify-center mt-24 mr-44">
-      <button
-        @click="isModalVisible = true"
-        class="bg-teal-600 hover:bg-teal-900 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-      >
-        <svg
-          class="fill-current text-white w-4 h-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 448 512"
+    <div class="flex flex-col justify-center mt-4">
+      <div class="justify-start mb-4 ml-20">
+        <button
+          @click="isModalVisible = true"
+          class="bg-teal-600 hover:bg-teal-900 text-white font-bold py-2 px-4 rounded inline-flex items-center"
         >
-          <path
-            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
-          />
-        </svg>
-        <span> New Note </span>
-      </button>
-    </div>
-
-    <div class="flex justify-center mt-4">
+          <svg
+            class="fill-current text-white w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+          >
+            <path
+              d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
+            />
+          </svg>
+          <span> New Note </span>
+        </button>
+      </div>
       <div class="grid grid-cols-3 gap-4">
         <div class="col-span-1">
-          <NotesList :notes="notes" @note-selected="setSelectedNote" />
+          <NotesList
+            :notes="notes"
+            @note-updated-form="handleFormSubmission"
+            @note-selected="setSelectedNote"
+            @notes-update="notesUpdated"
+          />
         </div>
         <div class="col-span-2" style="height: 30em">
           <ViewNote v-if="selectedNote != null" :note="selectedNote" />

@@ -1,13 +1,15 @@
 <template>
   <div class="w-full h-auto flex justify-center min-w-full min-h-full">
-    <div class="w-full bg-gray-100 border border-gray-200 rounded-lg shadow">
+    <div
+      class="w-full bg-teal-50 border border-emerald-600 rounded-lg shadow min-w-[45em] max-w-[45em] mb-4"
+    >
       <div
-        class="flex items-center justify-between mb-4 p-2 w-full h-auto bg-gray-400 rounded-b-lg"
+        class="flex items-center justify-between mb-4 p-2 w-full h-auto bg-emerald-600 rounded-b-lg"
       >
         <h4 class="text-xl font-bold leading-none text-white pl-2 pt-1">
           {{ note.title }}
         </h4>
-        <div class="text-sm font-bold text-gray-600 pt-1">
+        <div class="text-sm font-bold text-white pt-1">
           Note created at:
           <span
             class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded"
@@ -16,7 +18,10 @@
         </div>
       </div>
       <div class="flow-root p-8">
-        <p class="text-md font-bold text-black">
+        <p
+          class="text-md font-medium text-black whitespace-pre-wrap"
+          style="overflow-wrap: break-word"
+        >
           {{ note.content }}
         </p>
       </div>

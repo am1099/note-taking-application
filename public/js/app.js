@@ -18465,11 +18465,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
+  props: {
+    noteToUpdate: {
+      type: Array,
+      required: false,
+      "default": null
+    }
+  },
   data: function data() {
     return {
       note: {
-        title: "",
-        content: ""
+        title: this.noteToUpdate != null ? this.noteToUpdate.title : "",
+        content: this.noteToUpdate != null ? this.noteToUpdate.content : ""
       }
     };
   },
@@ -18481,7 +18488,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     saveNote: function saveNote() {
       var _this = this;
-      alert(this.note.title);
       axios.post("/api/notes", this.note).then(function (data) {
         console.log(data);
         if (data.data.success) {
@@ -18491,12 +18497,38 @@ __webpack_require__.r(__webpack_exports__);
             bgColor: "green"
           });
           _this.$emit("notesUpdate", data.data.notes.original.notes);
+          _this.close();
         } else {
           _this.$emit("formSubmission", {
             success: data.data.success,
             message: "Note was not created",
             bgColor: "red"
           });
+          _this.close();
+        }
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    updateNote: function updateNote() {
+      var _this2 = this;
+      axios.put("/api/notes/" + this.noteToUpdate.id, this.note).then(function (data) {
+        console.log(data);
+        if (data.data.success) {
+          _this2.$emit("formSubmission", {
+            success: data.data.success,
+            message: "Note updated successfully",
+            bgColor: "green"
+          });
+          _this2.$emit("notesUpdate", data.data.notes.original.notes);
+          _this2.close();
+        } else {
+          _this2.$emit("formSubmission", {
+            success: data.data.success,
+            message: "Note was not updated",
+            bgColor: "red"
+          });
+          _this2.close();
         }
       })["catch"](function (err) {
         console.log(err);
@@ -18518,19 +18550,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _NoteForm_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NoteForm.vue */ "./resources/js/components/NoteForm.vue");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {},
+  components: {
+    NoteForm: _NoteForm_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: ["notes"],
   data: function data() {
-    return {};
+    return {
+      isEditModalVisible: false,
+      noteToUpdate: null
+    };
   },
   mounted: function mounted() {},
   computed: {},
   methods: {
-    updateNote: function updateNote() {},
+    updateNote: function updateNote(note) {
+      this.noteToUpdate = note;
+      this.isEditModalVisible = true;
+    },
     deleteNote: function deleteNote(id) {},
     noteSelected: function noteSelected(note) {
       this.$emit("noteSelected", note);
+    },
+    noteDateCreated: function noteDateCreated(date) {
+      var dateObject = new Date(date);
+      var day = dateObject.getDate().toString().padStart(2, "0");
+      var month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+      var year = dateObject.getFullYear();
+      var hours = dateObject.getHours().toString().padStart(2, "0");
+      var minutes = dateObject.getMinutes().toString().padStart(2, "0");
+      return "".concat(day, "/").concat(month, "/").concat(year, " ").concat(hours, ":").concat(minutes);
     }
   }
 });
@@ -18609,7 +18660,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "w-full h-auto flex justify-center bg-gradient-to-r from-green-900 to-blue-75000 bg-teal-900 rounded-b-lg"
+  "class": "w-full h-auto flex justify-center bg-gradient-to-r from-green-900 to-blue-750 bg-teal-900 rounded-b-lg"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
   "class": "text-3xl font-bold text-white mt-6 mb-6"
 }, "Note Taking Arena")], -1 /* HOISTED */);
@@ -18618,20 +18669,20 @@ var _hoisted_2 = {
   "class": "flex justify-center mt-2"
 };
 var _hoisted_3 = {
-  "class": "flex justify-center mt-24 mr-44"
+  "class": "flex flex-col justify-center mt-4"
 };
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_4 = {
+  "class": "justify-start mb-4 ml-20"
+};
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   "class": "fill-current text-white w-4 h-4",
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 448 512"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
   d: "M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
 })], -1 /* HOISTED */);
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " New Note ", -1 /* HOISTED */);
-var _hoisted_6 = [_hoisted_4, _hoisted_5];
-var _hoisted_7 = {
-  "class": "flex justify-center mt-4"
-};
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " New Note ", -1 /* HOISTED */);
+var _hoisted_7 = [_hoisted_5, _hoisted_6];
 var _hoisted_8 = {
   "class": "grid grid-cols-3 gap-4"
 };
@@ -18669,22 +18720,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [_hoisted_1, $data.showToast ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast, {
     success: $data.success,
     message: $data.toastMessage,
-    bgColor: $data.toastBgColor
-  }, null, 8 /* PROPS */, ["success", "message", "bgColor"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[0] || (_cache[0] = function ($event) {
+    bgColor: $data.toastBgColor,
+    onClose: _cache[0] || (_cache[0] = function ($event) {
+      return $data.showToast = false;
+    })
+  }, null, 8 /* PROPS */, ["success", "message", "bgColor"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[1] || (_cache[1] = function ($event) {
       return $data.isModalVisible = true;
     }),
     "class": "bg-teal-600 hover:bg-teal-900 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-  }, [].concat(_hoisted_6))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NotesList, {
+  }, [].concat(_hoisted_7))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NotesList, {
     notes: $data.notes,
-    onNoteSelected: $options.setSelectedNote
-  }, null, 8 /* PROPS */, ["notes", "onNoteSelected"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [$data.selectedNote != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ViewNote, {
+    onNoteUpdatedForm: $options.handleFormSubmission,
+    onNoteSelected: $options.setSelectedNote,
+    onNotesUpdate: $options.notesUpdated
+  }, null, 8 /* PROPS */, ["notes", "onNoteUpdatedForm", "onNoteSelected", "onNotesUpdate"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [$data.selectedNote != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ViewNote, {
     key: 0,
     note: $data.selectedNote
   }, null, 8 /* PROPS */, ["note"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [].concat(_hoisted_13)))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" New Note Form "), $data.isModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteForm, {
     onFormSubmission: $options.handleFormSubmission,
     onNotesUpdate: $options.notesUpdated,
-    onClose: _cache[1] || (_cache[1] = function ($event) {
+    onClose: _cache[2] || (_cache[2] = function ($event) {
       return $data.isModalVisible = false;
     })
   }, null, 8 /* PROPS */, ["onFormSubmission", "onNotesUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
@@ -18711,9 +18767,9 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "text-center p-3 flex-auto justify-center leading-6"
 };
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
+var _hoisted_3 = {
   "class": "text-2xl text-teal-800 font-bold py-4"
-}, "Note Details", -1 /* HOISTED */);
+};
 var _hoisted_4 = {
   "class": "mb-4"
 };
@@ -18731,10 +18787,10 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_8 = {
   "class": "p-3 mt-2 text-center space-x-4 md:block"
 };
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_9 = {
   type: "submit",
   "class": "mb-2 md:mb-0 bg-teal-800 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-md hover:shadow-lg hover:bg-teal-500"
-}, " Save ", -1 /* HOISTED */);
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     onClick: _cache[0] || (_cache[0] = function () {
@@ -18743,13 +18799,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "fixed inset-0 bg-gray-900 opacity-70"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "fixed inset-0 mx-auto my-36 w-full max-w-lg p-3 rounded-xl shadow-lg",
-    onClick: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.close && $options.close.apply($options, arguments);
+    onClick: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $options.close();
     }, ["self"]))
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Form "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.noteToUpdate != null ? "Update " : "Create New ") + " Note ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Form "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     "class": "mt-4",
     onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return $options.saveNote();
+      return $props.noteToUpdate != null ? $options.updateNote() : $options.saveNote();
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
@@ -18767,9 +18823,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.note.content = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.note.content]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[3] || (_cache[3] = function () {
-      return $options.close && $options.close.apply($options, arguments);
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.note.content]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.noteToUpdate != null ? "Update" : "Save"), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[3] || (_cache[3] = function ($event) {
+      return $options.close();
     }),
     type: "button",
     "class": "bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-gray-100"
@@ -18791,64 +18847,90 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = ["onClick"];
-var _hoisted_2 = {
-  "class": "row-span-1"
+var _hoisted_1 = {
+  "class": "snap-x overflow-auto max-h-[30em]"
 };
+var _hoisted_2 = ["onClick"];
 var _hoisted_3 = {
-  "class": "text-xl text-gray-900 leading-tight group-hover:text-white"
+  "class": "row-span-1"
 };
 var _hoisted_4 = {
-  "class": "row-span-1"
+  "class": "text-xl text-gray-900 leading-tight group-hover:text-white"
 };
 var _hoisted_5 = {
-  "class": "text-sm text-gray-600 group-hover:text-white"
+  "class": "row-span-1"
 };
 var _hoisted_6 = {
+  "class": "text-sm text-gray-600 group-hover:text-white"
+};
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Date & Time: ", -1 /* HOISTED */);
+var _hoisted_8 = {
   "class": "row-span-2"
 };
-var _hoisted_7 = {
+var _hoisted_9 = {
   "class": "flex flex-col"
 };
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_10 = ["onClick"];
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   "class": "fill-current text-white w-4 h-4",
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 512 512"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
   d: "M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"
 })], -1 /* HOISTED */);
-var _hoisted_9 = [_hoisted_8];
-var _hoisted_10 = ["onClick"];
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_12 = [_hoisted_11];
+var _hoisted_13 = ["onClick"];
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   "class": "fill-current text-white w-4 h-4",
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 448 512"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
   d: "M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
 })], -1 /* HOISTED */);
-var _hoisted_12 = [_hoisted_11];
+var _hoisted_15 = [_hoisted_14];
+var _hoisted_16 = {
+  key: 0
+};
+var _hoisted_17 = {
+  "class": "grid grid-cols-6 gap-4"
+};
+var _hoisted_18 = {
+  "class": "col-start-2 col-span-4"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.notes, function (note) {
+  var _component_NoteForm = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("NoteForm");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.notes, function (note) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      "class": "max-w-sm mx-auto flex p-6 bg-white rounded-lg shadow-xl hover:bg-grey-900 mb-2",
+      "class": "snap-end max-w-xs ml-20 flex p-3 bg-white rounded-lg shadow-xl hover:bg-grey-900 mb-2",
       key: note.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
       "class": "grid grid-rows-2 grid-flow-col gap-4 ml-1 pt-1",
       onClick: function onClick($event) {
         return $options.noteSelected(note);
       }
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(note.title), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_5, " Date & Time: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(note.created_at), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      onClick: _cache[0] || (_cache[0] = function ($event) {
-        return $options.updateNote();
-      }),
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(note.title), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.noteDateCreated(note.created_at)), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      onClick: function onClick($event) {
+        return $options.updateNote(note);
+      },
       "class": "bg-teal-400 hover:bg-teal-800 text-white font-bold py-2 px-4 rounded inline-flex items-center mb-1"
-    }, [].concat(_hoisted_9)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, [].concat(_hoisted_12), 8 /* PROPS */, _hoisted_10), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: function onClick($event) {
         return $options.deleteNote(note.id);
       },
       "class": "bg-red-400 hover:bg-red-800 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-    }, [].concat(_hoisted_12), 8 /* PROPS */, _hoisted_10)])])], 8 /* PROPS */, _hoisted_1)]);
-  }), 128 /* KEYED_FRAGMENT */))]);
+    }, [].concat(_hoisted_15), 8 /* PROPS */, _hoisted_13)])])], 8 /* PROPS */, _hoisted_2)]);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" New Note Form "), $data.isEditModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteForm, {
+    onFormSubmission: _cache[0] || (_cache[0] = function (data) {
+      _ctx.$emit('noteUpdatedForm', data);
+    }),
+    onNotesUpdate: _cache[1] || (_cache[1] = function (notes) {
+      _ctx.$emit('notesUpdate', notes);
+    }),
+    onClose: _cache[2] || (_cache[2] = function ($event) {
+      return $data.isEditModalVisible = false;
+    }),
+    noteToUpdate: $data.noteToUpdate
+  }, null, 8 /* PROPS */, ["noteToUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -18906,12 +18988,15 @@ var _hoisted_9 = [_hoisted_8];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     id: "toast-default",
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("flex items-center w-full max-w-xs p-4 text-".concat($props.bgColor, "-600 rounded-lg shadow dark:text-").concat($props.bgColor, "-200 dark:bg-").concat($props.bgColor, "-900")),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("flex items-center w-full max-w-xs pt-4 text-".concat($props.bgColor, "-600 rounded-lg shadow ")),
     role: "alert"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-".concat($props.bgColor, "-500 rounded-lg dark:bg-").concat($props.bgColor, "-800 dark:text-").concat($props.bgColor, "-200"))
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-".concat($props.bgColor, "-500 rounded-lg"))
   }, [$props.success ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_1, [].concat(_hoisted_3))) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_4, [].concat(_hoisted_6)))], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.message), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return _ctx.$emit('close');
+    }),
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("ms-auto -mx-1.5 -my-1.5 bg-white text-".concat($props.bgColor, "-400 hover:text-").concat($props.bgColor, "-900 rounded-lg focus:ring-2 focus:ring-").concat($props.bgColor, "-300 p-1.5 hover:bg-").concat($props.bgColor, "-400 inline-flex items-center justify-center h-8 w-8 dark:text-").concat($props.bgColor, "-500 dark:hover:text-white dark:bg-").concat($props.bgColor, "-800 dark:hover:bg-").concat($props.bgColor, "-700")),
     "data-dismiss-target": "#toast-default",
     "aria-label": "Close"
@@ -18937,16 +19022,16 @@ var _hoisted_1 = {
   "class": "w-full h-auto flex justify-center min-w-full min-h-full"
 };
 var _hoisted_2 = {
-  "class": "w-full bg-gray-100 border border-gray-200 rounded-lg shadow"
+  "class": "w-full bg-teal-50 border border-emerald-600 rounded-lg shadow min-w-[45em] max-w-[45em] mb-4"
 };
 var _hoisted_3 = {
-  "class": "flex items-center justify-between mb-4 p-2 w-full h-auto bg-gray-400 rounded-b-lg"
+  "class": "flex items-center justify-between mb-4 p-2 w-full h-auto bg-emerald-600 rounded-b-lg"
 };
 var _hoisted_4 = {
   "class": "text-xl font-bold leading-none text-white pl-2 pt-1"
 };
 var _hoisted_5 = {
-  "class": "text-sm font-bold text-gray-600 pt-1"
+  "class": "text-sm font-bold text-white pt-1"
 };
 var _hoisted_6 = {
   "class": "bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded"
@@ -18955,7 +19040,10 @@ var _hoisted_7 = {
   "class": "flow-root p-8"
 };
 var _hoisted_8 = {
-  "class": "text-md font-bold text-black"
+  "class": "text-md font-medium text-black whitespace-pre-wrap",
+  style: {
+    "overflow-wrap": "break-word"
+  }
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.note.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Note created at: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.noteDateCreated), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.note.content), 1 /* TEXT */)])])]);

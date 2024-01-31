@@ -3,13 +3,18 @@
     <div @click="onToggle" class="fixed inset-0 bg-gray-900 opacity-70"></div>
     <div
       class="fixed inset-0 mx-auto my-36 w-full max-w-lg p-3 rounded-xl shadow-lg"
-      @click.self="close"
+      @click.self="close()"
     >
       <div class="bg-white text-black">
         <div class="text-center p-3 flex-auto justify-center leading-6">
-          <h2 class="text-2xl text-teal-800 font-bold py-4">Note Details</h2>
+          <h2 class="text-2xl text-teal-800 font-bold py-4">
+            {{ noteToUpdate != null ? "Update " : "Create New " }} Note
+          </h2>
           <!-- Form -->
-          <form class="mt-4" @submit.prevent="saveNote()">
+          <form
+            class="mt-4"
+            @submit.prevent="noteToUpdate != null ? updateNote() : saveNote()"
+          >
             <div class="mb-4">
               <label
                 class="block text-gray-700 text-sm font-bold mb-2"
@@ -46,10 +51,10 @@
                 type="submit"
                 class="mb-2 md:mb-0 bg-teal-800 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-md hover:shadow-lg hover:bg-teal-500"
               >
-                Save
+                {{ noteToUpdate != null ? "Update" : "Save" }}
               </button>
               <button
-                @click="close"
+                @click="close()"
                 type="button"
                 class="bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-gray-100"
               >
@@ -66,11 +71,18 @@
 <script>
 export default {
   components: {},
+  props: {
+    noteToUpdate: {
+      type: Array,
+      required: false,
+      default: null,
+    },
+  },
   data() {
     return {
       note: {
-        title: "",
-        content: "",
+        title: this.noteToUpdate != null ? this.noteToUpdate.title : "",
+        content: this.noteToUpdate != null ? this.noteToUpdate.content : "",
       },
     };
   },
@@ -81,7 +93,6 @@ export default {
       this.$emit("close");
     },
     saveNote() {
-      alert(this.note.title);
       axios
         .post("/api/notes", this.note)
         .then((data) => {
@@ -93,12 +104,41 @@ export default {
               bgColor: "green",
             });
             this.$emit("notesUpdate", data.data.notes.original.notes);
+            this.close();
           } else {
             this.$emit("formSubmission", {
               success: data.data.success,
               message: "Note was not created",
               bgColor: "red",
             });
+            this.close();
+          }
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    },
+
+    updateNote() {
+      axios
+        .put("/api/notes/" + this.noteToUpdate.id, this.note)
+        .then((data) => {
+          console.log(data);
+          if (data.data.success) {
+            this.$emit("formSubmission", {
+              success: data.data.success,
+              message: "Note updated successfully",
+              bgColor: "green",
+            });
+            this.$emit("notesUpdate", data.data.notes.original.notes);
+            this.close();
+          } else {
+            this.$emit("formSubmission", {
+              success: data.data.success,
+              message: "Note was not updated",
+              bgColor: "red",
+            });
+            this.close();
           }
         })
         .catch(function (err) {
