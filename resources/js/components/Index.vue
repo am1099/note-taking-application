@@ -39,8 +39,10 @@
         </div>
         <div class="col-span-2" style="height: 30em">
           <ViewNote v-if="selectedNote != null" :note="selectedNote" />
-          <div v-else class="place-content-center">
-            <p class="text-teal-800">Select a Note to be viewed</p>
+          <div v-else class="flex justify-center pt-36 place-content-center">
+            <p class="text-teal-800 capitalize font-bold text-2xl">
+              Select a Note to be viewed
+            </p>
           </div>
         </div>
       </div>

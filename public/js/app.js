@@ -18573,12 +18573,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ["note"],
   components: {},
   data: function data() {
     return {};
   },
   mounted: function mounted() {},
-  computed: {},
+  computed: {
+    noteDateCreated: function noteDateCreated() {
+      var dateObject = new Date(this.note.created_at);
+      var day = dateObject.getDate().toString().padStart(2, "0");
+      var month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+      var year = dateObject.getFullYear();
+      var hours = dateObject.getHours().toString().padStart(2, "0");
+      var minutes = dateObject.getMinutes().toString().padStart(2, "0");
+      return "".concat(day, "/").concat(month, "/").concat(year, " ").concat(hours, ":").concat(minutes);
+    }
+  },
   methods: {}
 });
 
@@ -18635,11 +18646,11 @@ var _hoisted_10 = {
 };
 var _hoisted_11 = {
   key: 1,
-  "class": "place-content-center"
+  "class": "flex justify-center pt-36 place-content-center"
 };
 var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-  "class": "text-teal-800"
-}, "Select a Note to be viewed", -1 /* HOISTED */);
+  "class": "text-teal-800 capitalize font-bold text-2xl"
+}, " Select a Note to be viewed ", -1 /* HOISTED */);
 var _hoisted_13 = [_hoisted_12];
 var _hoisted_14 = {
   key: 1
@@ -18923,10 +18934,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "w-full h-auto flex justify-center bg-grey-500 rounded-b-lg shadow-2xl min-w-full min-h-full"
+  "class": "w-full h-auto flex justify-center min-w-full min-h-full"
+};
+var _hoisted_2 = {
+  "class": "w-full bg-gray-100 border border-gray-200 rounded-lg shadow"
+};
+var _hoisted_3 = {
+  "class": "flex items-center justify-between mb-4 p-2 w-full h-auto bg-gray-400 rounded-b-lg"
+};
+var _hoisted_4 = {
+  "class": "text-xl font-bold leading-none text-white pl-2 pt-1"
+};
+var _hoisted_5 = {
+  "class": "text-sm font-bold text-gray-600 pt-1"
+};
+var _hoisted_6 = {
+  "class": "bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded"
+};
+var _hoisted_7 = {
+  "class": "flow-root p-8"
+};
+var _hoisted_8 = {
+  "class": "text-md font-bold text-black"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.note.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Note created at: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.noteDateCreated), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.note.content), 1 /* TEXT */)])])]);
 }
 
 /***/ }),
