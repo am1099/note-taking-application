@@ -18426,7 +18426,6 @@ __webpack_require__.r(__webpack_exports__);
     getNotes: function getNotes() {
       var _this = this;
       axios__WEBPACK_IMPORTED_MODULE_4__["default"].get("/api/notes").then(function (data) {
-        console.log(data);
         _this.notes = data.data.notes;
       });
     },
@@ -18452,9 +18451,12 @@ __webpack_require__.r(__webpack_exports__);
     handleDeleteSubmission: function handleDeleteSubmission(data) {
       this.handleFormSubmission(data, false);
     },
-    notesUpdated: function notesUpdated(notes) {
-      console.log(notes);
-      this.notes = notes;
+    notesUpdated: function notesUpdated(noteData) {
+      console.log(noteData);
+      this.notes = noteData.notes;
+      if (noteData.updatedNote != null) {
+        this.selectedNote = noteData.updatedNote;
+      }
     }
   }
 });
@@ -18665,7 +18667,8 @@ __webpack_require__.r(__webpack_exports__);
       note: {
         title: this.noteToUpdate != null ? this.noteToUpdate.title : "",
         content: this.noteToUpdate != null ? this.noteToUpdate.content : ""
-      }
+      },
+      formErrors: {}
     };
   },
   computed: {},
@@ -18694,8 +18697,11 @@ __webpack_require__.r(__webpack_exports__);
           });
           _this.close();
         }
-      })["catch"](function (err) {
-        console.log(err);
+      })["catch"](function (error) {
+        if (error.response.status === 422) {
+          _this.formErrors = error.response.data.errors;
+          console.log(_this.formErrors);
+        }
       });
     },
     updateNote: function updateNote() {
@@ -18708,7 +18714,10 @@ __webpack_require__.r(__webpack_exports__);
             message: "Note updated successfully",
             bgColor: "green"
           });
-          _this2.$emit("notesUpdate", data.data.notes.original.notes);
+          _this2.$emit("notesUpdate", {
+            notes: data.data.notes.original.notes,
+            updatedNote: _this2.note
+          });
           _this2.close();
         } else {
           _this2.$emit("formSubmission", {
@@ -18718,8 +18727,11 @@ __webpack_require__.r(__webpack_exports__);
           });
           _this2.close();
         }
-      })["catch"](function (err) {
-        console.log(err);
+      })["catch"](function (error) {
+        if (error.response.status === 422) {
+          _this2.formErrors = error.response.data.errors;
+          console.log(_this2.formErrors);
+        }
       });
     }
   }
@@ -18821,11 +18833,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     note: $data.selectedNote
   }, null, 8 /* PROPS */, ["note"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [].concat(_hoisted_13)))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" New Note Form "), $data.isModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteForm, {
     onFormSubmission: $options.handleFormSubmission,
+    onUpdateSelectedNote: _ctx.test,
     onNotesUpdate: $options.notesUpdated,
     onClose: _cache[2] || (_cache[2] = function ($event) {
       return $data.isModalVisible = false;
     })
-  }, null, 8 /* PROPS */, ["onFormSubmission", "onNotesUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, null, 8 /* PROPS */, ["onFormSubmission", "onUpdateSelectedNote", "onNotesUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -18939,7 +18952,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       _ctx.$emit('noteDeleted', data);
     }),
     onNotesUpdate: _cache[5] || (_cache[5] = function (notes) {
-      _ctx.$emit('notesUpdate', notes);
+      _ctx.$emit('notesUpdate', {
+        notes: notes,
+        updatedNote: null
+      });
     }),
     onClose: _cache[6] || (_cache[6] = function ($event) {
       return $data.isDeleteModalVisible = false;
@@ -19179,20 +19195,29 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "for": "title"
 }, " Title ", -1 /* HOISTED */);
 var _hoisted_6 = {
+  key: 0,
+  "class": "text-red-600"
+};
+var _hoisted_7 = {
   "class": "mb-4"
 };
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "block text-gray-700 text-sm font-bold mb-2",
   "for": "content"
 }, " Content ", -1 /* HOISTED */);
-var _hoisted_8 = {
+var _hoisted_9 = {
+  key: 0,
+  "class": "text-red-600"
+};
+var _hoisted_10 = {
   "class": "p-3 mt-2 text-center space-x-4 md:block"
 };
-var _hoisted_9 = {
+var _hoisted_11 = {
   type: "submit",
   "class": "mb-2 md:mb-0 bg-teal-800 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-md hover:shadow-lg hover:bg-teal-500"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _$data$formErrors, _$data$formErrors2;
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     onClick: _cache[0] || (_cache[0] = function () {
       return _ctx.onToggle && _ctx.onToggle.apply(_ctx, arguments);
@@ -19216,7 +19241,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.note.title = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.note.title]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.note.title]]), (_$data$formErrors = $data.formErrors) !== null && _$data$formErrors !== void 0 && _$data$formErrors.title ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.formErrors.title[0]), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     "class": "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
     id: "content",
     rows: "6",
@@ -19224,7 +19249,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.note.content = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.note.content]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.noteToUpdate != null ? "Update" : "Save"), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.note.content]]), (_$data$formErrors2 = $data.formErrors) !== null && _$data$formErrors2 !== void 0 && _$data$formErrors2.content ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.formErrors.content[0]), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.noteToUpdate != null ? "Update" : "Save"), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.close();
     }),

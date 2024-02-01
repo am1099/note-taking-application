@@ -60,6 +60,7 @@
         <div class="col-start-2 col-span-4">
           <NoteForm
             @form-submission="handleFormSubmission"
+            @update-selected-note="test"
             @notes-update="notesUpdated"
             @close="isModalVisible = false"
           />
@@ -106,7 +107,6 @@ export default {
     },
     getNotes() {
       axios.get("/api/notes").then((data) => {
-        console.log(data);
         this.notes = data.data.notes;
       });
     },
@@ -132,9 +132,12 @@ export default {
     handleDeleteSubmission(data) {
       this.handleFormSubmission(data, false);
     },
-    notesUpdated(notes) {
-      console.log(notes);
-      this.notes = notes;
+    notesUpdated(noteData) {
+      console.log(noteData);
+      this.notes = noteData.notes;
+      if (noteData.updatedNote != null) {
+        this.selectedNote = noteData.updatedNote;
+      }
     },
   },
 };

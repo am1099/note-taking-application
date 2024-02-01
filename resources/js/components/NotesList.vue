@@ -100,7 +100,10 @@
             "
             @notes-update="
               (notes) => {
-                $emit('notesUpdate', notes);
+                $emit('notesUpdate', {
+                  notes: notes,
+                  updatedNote: null,
+                });
               }
             "
             @close="isDeleteModalVisible = false"

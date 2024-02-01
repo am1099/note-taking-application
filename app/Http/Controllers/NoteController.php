@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
-use Illuminate\Http\Request;
+use App\Http\Requests\NoteRequest;
 
 class NoteController extends Controller
 {
@@ -20,13 +20,13 @@ class NoteController extends Controller
     }
 
 
-    public function createNote(Request $request)
+    public function createNote(NoteRequest $request)
     {
         // Validate the incoming request data
-        $request->validate([
-            'title' => ['required', 'max:255'],
-            'content' => ['required'],
-        ]);
+        // $request->validate([
+        //     'title' => ['required', 'max:255'],
+        //     'content' => ['required'],
+        // ]);
 
         try {
             Note::create([
@@ -40,13 +40,13 @@ class NoteController extends Controller
     }
 
 
-    public function updateNote(Request $request, $id)
+    public function updateNote(NoteRequest $request, $id)
     {
         // Validate the incoming request data
-        $request->validate([
-            'title' => ['required', 'max:255'],
-            'content' => ['required'],
-        ]);
+        // $request->validate([
+        //     'title' => ['required', 'max:255'],
+        //     'content' => ['required'],
+        // ]);
 
         try {
             Note::whereId($id)->first()->update([

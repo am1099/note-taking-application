@@ -29,6 +29,9 @@
                 placeholder="Note title ..."
                 v-model="note.title"
               />
+              <span class="text-red-600" v-if="formErrors?.title">{{
+                formErrors.title[0]
+              }}</span>
             </div>
             <div class="mb-4">
               <label
@@ -44,6 +47,9 @@
                 placeholder="Note content ..."
                 v-model="note.content"
               />
+              <span class="text-red-600" v-if="formErrors?.content">{{
+                formErrors.content[0]
+              }}</span>
             </div>
 
             <div class="p-3 mt-2 text-center space-x-4 md:block">
@@ -84,6 +90,7 @@ export default {
         title: this.noteToUpdate != null ? this.noteToUpdate.title : "",
         content: this.noteToUpdate != null ? this.noteToUpdate.content : "",
       },
+      formErrors: {},
     };
   },
   computed: {},
@@ -114,8 +121,11 @@ export default {
             this.close();
           }
         })
-        .catch(function (err) {
-          console.log(err);
+        .catch((error) => {
+          if (error.response.status === 422) {
+            this.formErrors = error.response.data.errors;
+            console.log(this.formErrors);
+          }
         });
     },
 
@@ -130,7 +140,10 @@ export default {
               message: "Note updated successfully",
               bgColor: "green",
             });
-            this.$emit("notesUpdate", data.data.notes.original.notes);
+            this.$emit("notesUpdate", {
+              notes: data.data.notes.original.notes,
+              updatedNote: this.note,
+            });
             this.close();
           } else {
             this.$emit("formSubmission", {
@@ -141,8 +154,11 @@ export default {
             this.close();
           }
         })
-        .catch(function (err) {
-          console.log(err);
+        .catch((error) => {
+          if (error.response.status === 422) {
+            this.formErrors = error.response.data.errors;
+            console.log(this.formErrors);
+          }
         });
     },
   },
