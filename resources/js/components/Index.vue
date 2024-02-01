@@ -60,7 +60,6 @@
         <div class="col-start-2 col-span-4">
           <NoteForm
             @form-submission="handleFormSubmission"
-            @update-selected-note="test"
             @notes-update="notesUpdated"
             @close="isModalVisible = false"
           />
@@ -133,7 +132,7 @@ export default {
       this.handleFormSubmission(data, false);
     },
     notesUpdated(noteData) {
-      console.log(noteData);
+      console.log("ads", noteData);
       this.notes = noteData.notes;
       if (noteData.updatedNote != null) {
         this.selectedNote = noteData.updatedNote;

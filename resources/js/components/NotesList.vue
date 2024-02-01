@@ -1,6 +1,16 @@
 <template>
   <div class="overflow-auto max-h-[30em]">
+    {{ notes }}
     <div
+      v-if="notes == null || notes.length == 0"
+      class="max-w-xs ml-20 flex p-3 rounded-lg shadow-xl mb-2 bg-white"
+    >
+      <div class="text-center ml-1 pt-1">
+        <h4 class="text-xl leading-tight text-gray-700">No Notes Created.</h4>
+      </div>
+    </div>
+    <div
+      v-else
       v-for="note in notes"
       :key="note.id"
       @click="noteSelected(note)"

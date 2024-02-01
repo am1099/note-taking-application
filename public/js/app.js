@@ -18452,7 +18452,7 @@ __webpack_require__.r(__webpack_exports__);
       this.handleFormSubmission(data, false);
     },
     notesUpdated: function notesUpdated(noteData) {
-      console.log(noteData);
+      console.log("ads", noteData);
       this.notes = noteData.notes;
       if (noteData.updatedNote != null) {
         this.selectedNote = noteData.updatedNote;
@@ -18687,7 +18687,10 @@ __webpack_require__.r(__webpack_exports__);
             message: "Note created successfully",
             bgColor: "green"
           });
-          _this.$emit("notesUpdate", data.data.notes.original.notes);
+          _this.$emit("notesUpdate", {
+            notes: data.data.notes.original.notes,
+            updatedNote: null
+          });
           _this.close();
         } else {
           _this.$emit("formSubmission", {
@@ -18834,12 +18837,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     note: $data.selectedNote
   }, null, 8 /* PROPS */, ["note"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [].concat(_hoisted_13)))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" New Note Form "), $data.isModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteForm, {
     onFormSubmission: $options.handleFormSubmission,
-    onUpdateSelectedNote: _ctx.test,
     onNotesUpdate: $options.notesUpdated,
     onClose: _cache[2] || (_cache[2] = function ($event) {
       return $data.isModalVisible = false;
     })
-  }, null, 8 /* PROPS */, ["onFormSubmission", "onUpdateSelectedNote", "onNotesUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, null, 8 /* PROPS */, ["onFormSubmission", "onNotesUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -18860,51 +18862,52 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "overflow-auto max-h-[30em]"
 };
-var _hoisted_2 = ["onClick"];
-var _hoisted_3 = {
+var _hoisted_2 = {
+  key: 0,
+  "class": "max-w-xs ml-20 flex p-3 rounded-lg shadow-xl mb-2 bg-white"
+};
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "text-center ml-1 pt-1"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+  "class": "text-xl leading-tight text-gray-700"
+}, "No Notes Created.")], -1 /* HOISTED */);
+var _hoisted_4 = [_hoisted_3];
+var _hoisted_5 = ["onClick"];
+var _hoisted_6 = {
   "class": "grid grid-rows-2 grid-flow-col gap-4 ml-1 pt-1 hover:bg-grey-900"
 };
-var _hoisted_4 = {
-  "class": "row-span-1"
-};
-var _hoisted_5 = {
-  "class": "row-span-1"
-};
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Date & Time: ", -1 /* HOISTED */);
 var _hoisted_7 = {
-  "class": "row-span-2"
+  "class": "row-span-1"
 };
 var _hoisted_8 = {
+  "class": "row-span-1"
+};
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, "Date & Time: ", -1 /* HOISTED */);
+var _hoisted_10 = {
+  "class": "row-span-2"
+};
+var _hoisted_11 = {
   "class": "flex flex-col"
 };
-var _hoisted_9 = ["onClick"];
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_12 = ["onClick"];
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   "class": "fill-current text-white w-4 h-4",
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 512 512"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
   d: "M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"
 })], -1 /* HOISTED */);
-var _hoisted_11 = [_hoisted_10];
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_14 = [_hoisted_13];
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   "class": "fill-current text-white w-4 h-4",
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 448 512"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
   d: "M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
 })], -1 /* HOISTED */);
-var _hoisted_13 = [_hoisted_12];
-var _hoisted_14 = {
-  key: 0
-};
-var _hoisted_15 = {
-  "class": "grid grid-cols-6 gap-4"
-};
-var _hoisted_16 = {
-  "class": "col-start-2 col-span-4"
-};
+var _hoisted_16 = [_hoisted_15];
 var _hoisted_17 = {
-  key: 1
+  key: 2
 };
 var _hoisted_18 = {
   "class": "grid grid-cols-6 gap-4"
@@ -18912,32 +18915,43 @@ var _hoisted_18 = {
 var _hoisted_19 = {
   "class": "col-start-2 col-span-4"
 };
+var _hoisted_20 = {
+  key: 3
+};
+var _hoisted_21 = {
+  "class": "grid grid-cols-6 gap-4"
+};
+var _hoisted_22 = {
+  "class": "col-start-2 col-span-4"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_NoteForm = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("NoteForm");
   var _component_NoteDeleteForm = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("NoteDeleteForm");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.notes, function (note) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.notes) + " ", 1 /* TEXT */), $props.notes == null || $props.notes.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [].concat(_hoisted_4))) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 1
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.notes, function (note) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: note.id,
       onClick: function onClick($event) {
         return $options.noteSelected(note);
       },
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.isSelected(note.id) ? 'bg-gray-600 transition ease-in-out delay-150 hover:translate-y-0.5 scale-105 duration-50' : 'bg-white', "max-w-xs ml-20 flex p-3 rounded-lg shadow-xl mb-2"])
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-xl leading-tight", $options.isSelected(note.id) ? 'text-white' : 'text-gray-700'])
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(note.title), 3 /* TEXT, CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(note.title), 3 /* TEXT, CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-sm", $options.isSelected(note.id) ? 'text-white' : 'text-gray-700'])
-    }, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.noteDateCreated(note.created_at)), 1 /* TEXT */)], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.noteDateCreated(note.created_at)), 1 /* TEXT */)], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: function onClick($event) {
         return $options.updateNote(note);
       },
       "class": "bg-teal-400 text-white font-bold py-2 px-4 rounded inline-flex items-center mb-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-teal-800 duration-300"
-    }, [].concat(_hoisted_11), 8 /* PROPS */, _hoisted_9), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, [].concat(_hoisted_14), 8 /* PROPS */, _hoisted_12), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: _cache[0] || (_cache[0] = function ($event) {
         return $data.isDeleteModalVisible = true;
       }),
       "class": "bg-red-400 text-white font-bold py-2 px-4 rounded inline-flex items-center transition ease-in-out delay-150 hover:translate-y-1 hover:scale-110 hover:bg-red-800 duration-300"
-    }, [].concat(_hoisted_13))])])])], 10 /* CLASS, PROPS */, _hoisted_2);
-  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Edit Note Form "), $data.isEditModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteForm, {
+    }, [].concat(_hoisted_16))])])])], 10 /* CLASS, PROPS */, _hoisted_5);
+  }), 128 /* KEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Edit Note Form "), $data.isEditModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteForm, {
     onFormSubmission: _cache[1] || (_cache[1] = function (data) {
       _ctx.$emit('noteUpdatedForm', data);
     }),
@@ -18948,7 +18962,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $data.isEditModalVisible = false;
     }),
     noteToUpdate: $data.noteToUpdate
-  }, null, 8 /* PROPS */, ["noteToUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" delete Note Form "), $data.isDeleteModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteDeleteForm, {
+  }, null, 8 /* PROPS */, ["noteToUpdate"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" delete Note Form "), $data.isDeleteModalVisible ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NoteDeleteForm, {
     onFormSubmission: _cache[4] || (_cache[4] = function (data) {
       _ctx.$emit('noteDeleted', data);
     }),

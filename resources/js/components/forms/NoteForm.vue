@@ -110,7 +110,10 @@ export default {
               message: "Note created successfully",
               bgColor: "green",
             });
-            this.$emit("notesUpdate", data.data.notes.original.notes);
+            this.$emit("notesUpdate", {
+              notes: data.data.notes.original.notes,
+              updatedNote: null,
+            });
             this.close();
           } else {
             this.$emit("formSubmission", {

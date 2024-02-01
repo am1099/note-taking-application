@@ -22,12 +22,6 @@ class NoteController extends Controller
 
     public function createNote(NoteRequest $request)
     {
-        // Validate the incoming request data
-        // $request->validate([
-        //     'title' => ['required', 'max:255'],
-        //     'content' => ['required'],
-        // ]);
-
         try {
             Note::create([
                 "title" => $request->title,
@@ -42,12 +36,6 @@ class NoteController extends Controller
 
     public function updateNote(NoteRequest $request, $id)
     {
-        // Validate the incoming request data
-        // $request->validate([
-        //     'title' => ['required', 'max:255'],
-        //     'content' => ['required'],
-        // ]);
-
         try {
             Note::whereId($id)->first()->update([
                 "title" => $request->title,
