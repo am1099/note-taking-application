@@ -140,6 +140,8 @@ export default {
               message: "Note updated successfully",
               bgColor: "green",
             });
+
+            this.note.created_at = this.noteToUpdate.created_at;
             this.$emit("notesUpdate", {
               notes: data.data.notes.original.notes,
               updatedNote: this.note,

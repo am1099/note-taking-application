@@ -18714,6 +18714,7 @@ __webpack_require__.r(__webpack_exports__);
             message: "Note updated successfully",
             bgColor: "green"
           });
+          _this2.note.created_at = _this2.noteToUpdate.created_at;
           _this2.$emit("notesUpdate", {
             notes: data.data.notes.original.notes,
             updatedNote: _this2.note
