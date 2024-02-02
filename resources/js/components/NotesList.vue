@@ -1,6 +1,5 @@
 <template>
   <div class="overflow-auto max-h-[30em]">
-    {{ notes }}
     <div
       v-if="notes == null || notes.length == 0"
       class="max-w-xs ml-20 flex p-3 rounded-lg shadow-xl mb-2 bg-white"

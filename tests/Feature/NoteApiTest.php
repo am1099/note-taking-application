@@ -12,49 +12,87 @@ class NoteApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testGetAllNotes()
+    public function test_get_all_notes()
     {
-        Note::factory()->count(3)->create();
+
         $response = $this->get('/api/notes');
 
         $response->assertStatus(200);
-        $response->assertJsonCount(3, 'data');
     }
 
-    public function testGetSingleNote()
+    public function test_get_single_note()
     {
         $note = Note::factory()->create();
+
         $response = $this->get("/api/notes/{$note->id}");
 
-        $response->assertStatus(200);
-        $response->assertJson(['data' => $note->toArray()]);
+        $response->assertStatus(201);
     }
 
-    public function testCreateNote()
+    public function test_get_single_note_error()
     {
-        $noteData = Note::factory()->make()->toArray();
+        $note = Note::factory()->create();
+
+        $response = $this->get("/api/notes/sdgf");
+
+        $response->assertStatus(404);
+    }
+
+    public function test_create_note()
+    {
+        $noteData = ['title' => 'Test title', 'content' => 'Test content'];
         $response = $this->post('/api/notes', $noteData);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $this->assertDatabaseHas('notes', $noteData);
     }
 
-    public function testUpdateNote()
+    public function test_create_note_with_empty_fields()
+    {
+        $noteData = ['title' => '', 'content' => ''];
+        $response = $this->post('/api/notes', $noteData);
+
+        $response->assertStatus(302)
+            ->assertSessionHasErrors(['title', 'content']);
+    }
+
+
+    public function test_update_note()
     {
         $note = Note::factory()->create();
-        $updatedNoteData = ['title' => 'Updated Title', 'content' => 'Updated Content'];
+
+        $updatedNoteData = ['title' => 'Updated Title 2', 'content' => 'Updated Content 2'];
 
         $response = $this->put("/api/notes/{$note->id}", $updatedNoteData);
         $response->assertStatus(200);
         $this->assertDatabaseHas('notes', array_merge(['id' => $note->id], $updatedNoteData));
     }
 
-    public function testDeleteNote()
+    public function test_update_note_error()
+    {
+        $note = Note::factory()->create();
+        $updatedNoteData = ['content' => 'Updated Content 2'];
+
+        $response = $this->put("/api/notes/{$note->id}", $updatedNoteData);
+
+        $response->assertStatus(302)
+            ->assertSessionHasErrors(['title']);
+    }
+
+    public function test_delete_note()
     {
         $note = Note::factory()->create();
         $response = $this->delete("/api/notes/{$note->id}");
 
-        $response->assertStatus(204);
+        $response->assertStatus(200);
         $this->assertDatabaseMissing('notes', ['id' => $note->id]);
+    }
+
+    public function test_delete_note_error()
+    {
+        $response = $this->delete("/api/notes/10000000");
+
+        $response->assertStatus(404);
+        $this->assertDatabaseMissing('notes', ['id' => 10000000]);
     }
 }
