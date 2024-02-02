@@ -132,7 +132,6 @@ export default {
       this.handleFormSubmission(data, false);
     },
     notesUpdated(noteData) {
-      console.log("ads", noteData);
       this.notes = noteData.notes;
       if (noteData.updatedNote != null) {
         this.selectedNote = noteData.updatedNote;

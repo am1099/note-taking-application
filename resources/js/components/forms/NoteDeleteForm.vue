@@ -90,7 +90,6 @@ export default {
       axios
         .delete("/api/notes/" + this.selectedNoteId)
         .then((data) => {
-          console.log(data);
           if (data.data.success) {
             this.$emit("formSubmission", {
               success: data.data.success,

@@ -18452,7 +18452,6 @@ __webpack_require__.r(__webpack_exports__);
       this.handleFormSubmission(data, false);
     },
     notesUpdated: function notesUpdated(noteData) {
-      console.log("ads", noteData);
       this.notes = noteData.notes;
       if (noteData.updatedNote != null) {
         this.selectedNote = noteData.updatedNote;
@@ -18497,7 +18496,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     isSelected: function isSelected() {
       var _this = this;
-      // Computed property to determine if the current note is the selected note
       return function (noteId) {
         return _this.selectedNoteId && _this.selectedNoteId === noteId;
       };
@@ -18510,7 +18508,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     noteSelected: function noteSelected(note) {
       this.$emit("noteSelected", note);
-      console.log("selected: " + note.id);
       this.selectedNoteId = note.id;
     },
     noteDateCreated: function noteDateCreated(date) {
@@ -18616,7 +18613,6 @@ __webpack_require__.r(__webpack_exports__);
     deleteNote: function deleteNote() {
       var _this = this;
       axios["delete"]("/api/notes/" + this.selectedNoteId).then(function (data) {
-        console.log(data);
         if (data.data.success) {
           _this.$emit("formSubmission", {
             success: data.data.success,
@@ -18680,7 +18676,6 @@ __webpack_require__.r(__webpack_exports__);
     saveNote: function saveNote() {
       var _this = this;
       axios.post("/api/notes", this.note).then(function (data) {
-        console.log(data);
         if (data.data.success) {
           _this.$emit("formSubmission", {
             success: data.data.success,
@@ -18703,14 +18698,12 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this.formErrors = error.response.data.errors;
-          console.log(_this.formErrors);
         }
       });
     },
     updateNote: function updateNote() {
       var _this2 = this;
       axios.put("/api/notes/" + this.noteToUpdate.id, this.note).then(function (data) {
-        console.log(data);
         if (data.data.success) {
           _this2.$emit("formSubmission", {
             success: data.data.success,
@@ -18734,7 +18727,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this2.formErrors = error.response.data.errors;
-          console.log(_this2.formErrors);
         }
       });
     }
@@ -19044,7 +19036,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return _ctx.$emit('close');
     }),
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("ms-auto -mx-1.5 -my-1.5 bg-white text-".concat($props.bgColor, "-400 hover:text-").concat($props.bgColor, "-900 rounded-lg focus:ring-2 focus:ring-").concat($props.bgColor, "-300 p-1.5 hover:bg-").concat($props.bgColor, "-400 inline-flex items-center justify-center h-8 w-8 dark:text-").concat($props.bgColor, "-500 dark:hover:text-white dark:bg-").concat($props.bgColor, "-800 dark:hover:bg-").concat($props.bgColor, "-700")),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("ms-auto -mx-1.5 -my-1.5 bg-white text-".concat($props.bgColor, "-400 hover:text-").concat($props.bgColor, "-900 rounded-lg focus:ring-2 focus:ring-").concat($props.bgColor, "-300 p-1.5 hover:bg-").concat($props.bgColor, "-400 inline-flex items-center justify-center h-8 w-8 ")),
     "data-dismiss-target": "#toast-default",
     "aria-label": "Close"
   }, [].concat(_hoisted_10), 2 /* CLASS */)]);

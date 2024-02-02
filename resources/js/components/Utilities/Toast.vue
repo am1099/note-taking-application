@@ -33,7 +33,7 @@
     <button
       type="button"
       @click="$emit('close')"
-      :class="`ms-auto -mx-1.5 -my-1.5 bg-white text-${bgColor}-400 hover:text-${bgColor}-900 rounded-lg focus:ring-2 focus:ring-${bgColor}-300 p-1.5 hover:bg-${bgColor}-400 inline-flex items-center justify-center h-8 w-8 dark:text-${bgColor}-500 dark:hover:text-white dark:bg-${bgColor}-800 dark:hover:bg-${bgColor}-700`"
+      :class="`ms-auto -mx-1.5 -my-1.5 bg-white text-${bgColor}-400 hover:text-${bgColor}-900 rounded-lg focus:ring-2 focus:ring-${bgColor}-300 p-1.5 hover:bg-${bgColor}-400 inline-flex items-center justify-center h-8 w-8 `"
       data-dismiss-target="#toast-default"
       aria-label="Close"
     >

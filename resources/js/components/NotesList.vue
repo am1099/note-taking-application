@@ -147,7 +147,6 @@ export default {
   mounted() {},
   computed: {
     isSelected() {
-      // Computed property to determine if the current note is the selected note
       return (noteId) => this.selectedNoteId && this.selectedNoteId === noteId;
     },
   },
@@ -158,7 +157,6 @@ export default {
     },
     noteSelected(note) {
       this.$emit("noteSelected", note);
-      console.log("selected: " + note.id);
       this.selectedNoteId = note.id;
     },
     noteDateCreated(date) {

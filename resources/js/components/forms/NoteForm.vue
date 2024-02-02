@@ -103,7 +103,6 @@ export default {
       axios
         .post("/api/notes", this.note)
         .then((data) => {
-          console.log(data);
           if (data.data.success) {
             this.$emit("formSubmission", {
               success: data.data.success,
@@ -127,7 +126,6 @@ export default {
         .catch((error) => {
           if (error.response.status === 422) {
             this.formErrors = error.response.data.errors;
-            console.log(this.formErrors);
           }
         });
     },
@@ -136,7 +134,6 @@ export default {
       axios
         .put("/api/notes/" + this.noteToUpdate.id, this.note)
         .then((data) => {
-          console.log(data);
           if (data.data.success) {
             this.$emit("formSubmission", {
               success: data.data.success,
@@ -162,7 +159,6 @@ export default {
         .catch((error) => {
           if (error.response.status === 422) {
             this.formErrors = error.response.data.errors;
-            console.log(this.formErrors);
           }
         });
     },
